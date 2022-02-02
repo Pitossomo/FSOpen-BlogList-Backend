@@ -11,7 +11,6 @@ const blogSchema = new mongoose.Schema({
 const mongoUrl = config.MONGODB_URL
 
 const Blog = mongoose.model('Blog', blogSchema)
-
 mongoose.connect(mongoUrl)
 
 module.exports = Blog
