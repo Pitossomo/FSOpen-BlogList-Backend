@@ -1,7 +1,7 @@
 const listHelper = require('../utils/list_helper')
 const Blog = require('../models/blog')
 
-const favoriteBlog = listHelper.favoriteBlog
+const mostBlogs = listHelper.mostBlogs
 
 const blogs = [
   {
@@ -54,35 +54,34 @@ const blogs = [
   }  
 ]
 
-describe('favoriteTest', () => {
+describe('mostBlogs', () => {
   test('of a empty blog list is undefined', () => {
-    const result = favoriteBlog([])
-    expect(result).toEqual(undefined)
+    const result = mostBlogs([]) 
+    expect(result).toBe(undefined)
   })
 
-  test('of a single-blog blog list is the one blog itself', () => {
-    const result = favoriteBlog([blogs[0]])
+  test('of only one blog is the author of this one blog', () => {
+    const result = mostBlogs([
+      {
+        _id: "5a422a851b54a676234d17f7",
+        title: "React patterns",
+        author: "Michael Chan",
+        url: "https://reactpatterns.com/",
+        likes: 7,
+        __v: 0
+      }  
+    ])
     expect(result).toEqual({
-      _id: "5a422a851b54a676234d17f7",
-      title: "React patterns",
       author: "Michael Chan",
-      url: "https://reactpatterns.com/",
-      likes: 7,
-      __v: 0
+      blogs: 1
     })
   })
 
-  test('of many blogs is the one with most likes', () => {
-    const result = favoriteBlog(blogs)
-    expect(result).toEqual(
-      {
-        _id: "5a422b3a1b54a676234d17f9",
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-        likes: 12,
-        __v: 0
-      }
-    )
+  test('of a blog list is calculated right', () => {
+    const result = mostBlogs(blogs)
+    expect(result).toEqual({
+      author: "Robert C. Martin",
+      blogs: 3
+    })
   })
 })
