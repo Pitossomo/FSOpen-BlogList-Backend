@@ -53,7 +53,7 @@ describe('blog api', () => {
   })
 
   // Exercise 4.10
-  test.only('save correctly the content of the blog - Ex. 4.10', async () => {
+  test('save correctly the content of the blog - Ex. 4.10', async () => {
     const blogToPost = {
       title: 'React is fun',
       author: 'Pitossomo',
@@ -93,7 +93,7 @@ describe('blog api', () => {
     expect(blog.likes).toBe(0)
   })
 
-  test.todo('Should return 400 error when posting new blog without title or url - Ex. 4.12')
+  test.only('Should return 400 error when posting new blog without title or url - Ex. 4.12')
 })
 
 afterAll(() => {
