@@ -27,7 +27,13 @@ describe('blog api', () => {
     expect(response.body).toHaveLength(6)
   })
 
-  test.todo('Should have its unique identifier named as id - Ex. 4.9')
+  test('has the unique identifier named as id - Ex. 4.9', async () => {
+    const response = await api.get('/api/blogs')
+    const firstBlog = response.body[0]
+
+    expect(firstBlog.id).toBeDefined()
+  })
+
   test.todo('Should add 1 to the total ammount of blogs when posting a new blog - Ex. 4.10')
   test.todo('Should save correctly the content of the blog to the database - Ex. 4.10')
   test.todo('Should default value of likes to 0 when it is missing - Ex. 4.11')
