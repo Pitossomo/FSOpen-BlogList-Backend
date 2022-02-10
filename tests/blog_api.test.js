@@ -15,11 +15,11 @@ beforeEach(async () => {
   await Promise.all(blogPromises)
 })
 
-describe('blog api', () => {
+describe('blogs GET method API', () => {
   test('return blogs in JSON format', async () => {
     await api.get('/api/blogs').expect(200)
       .expect('Content-Type', /application\/json/)
-  }, 5000)
+  })
   
   test('return the correct amount of blogs', async () => {
     const response = await api.get('/api/blogs')
@@ -33,8 +33,9 @@ describe('blog api', () => {
 
     expect(firstBlog.id).toBeDefined()
   })
+})
 
-  // Exercise 4.10
+describe('blogs POST method API', () => {
   test('add 1 to the ammount of blogs when posting a new blog', async () => {
     const blogToPost = {
       title: "React is fun",
@@ -52,7 +53,6 @@ describe('blog api', () => {
 
   })
 
-  // Exercise 4.10
   test('save correctly the content of the blog - Ex. 4.10', async () => {
     const blogToPost = {
       title: 'React is fun',
@@ -78,8 +78,6 @@ describe('blog api', () => {
     })
   })
 
-
-  // Exercise 4.11
   test('default value of likes to 0 when it is missing', async () => {
     const blogToPost = {
       title: "React is fun",
@@ -88,12 +86,37 @@ describe('blog api', () => {
     }
 
     const response = await api.post('/api/blogs').send(blogToPost)
-
     const blog = response.body
     expect(blog.likes).toBe(0)
   })
 
-  test.only('Should return 400 error when posting new blog without title or url - Ex. 4.12')
+  test('return 400 error when POST new blog with missing title', async () => {
+    const blogToPost = {
+      author: "Pitossomo",
+      url: "pitoact.com"
+    }
+    
+    await api.post('/api/blogs').send(blogToPost).expect(400)
+  })
+
+  test('return 400 error when POST new blog with missing url', async () => {
+    const blogToPost = {
+      title: 'React is fun',
+      author: "Pitossomo"
+    }
+    
+    await api.post('/api/blogs').send(blogToPost).expect(400)
+  })
+})
+
+describe("blog api DELETE method", () => {
+  test.todo("removes one blog from list")
+  test.todo("correctly removes blog with passed id from list")
+})
+
+describe("blog api PUT method", () => {
+  test.todo("correctly update blog with passed id")
+  test.todo("check for valid parameters")
 })
 
 afterAll(() => {

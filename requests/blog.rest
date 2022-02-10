@@ -1,0 +1,24 @@
+### GET all blogs
+GET http://localhost:3003/api/blogs
+
+### POST a new blog
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+  "title": "XOXO",
+  "author": "Harlay Qin",
+  "url": "hquin.com.ux"
+}
+### DELETE a blog by id
+DELETE http://localhost:3003/api/blogs/6204ca8c719bb26436c9ec07
+
+### PUT a blog change by id
+PUT http://localhost:3003/api/blogs/6204c8b1d68e291a2923129f
+Content-Type: application/json
+
+{
+  "title": "Mr. J is gay",
+  "author": "Harley",
+  "url": "hquin.com.ux"
+}
