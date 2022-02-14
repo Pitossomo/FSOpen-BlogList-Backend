@@ -49,6 +49,37 @@ const initialBlogs = [
   }
 ]
 
+const initialUsers = [
+  {
+    _id: "5a422aa71b54a676234d17f4",
+    username: "pitossomo",
+    name: "Pitos Somos",
+    password: "03eu89fjd9sjf9d",
+    __v: 0
+  },
+  {
+    _id: "5a422a851b54a676234d17f5",
+    username: "mayhume",
+    name: "Wanessa Mayhume",
+    password: "32safds34ersdfsd",
+    __v: 0
+  },
+  {
+    _id: "5a422a851b54a676234d17f6",
+    username: "bereta",
+    name: "Bia Mayhume",
+    password: "34esdfcr324rdsfs",
+    __v: 0
+  },
+  {
+    _id: "5a422a851b54a676234d17f7",
+    username: "jubilea",
+    name: "Juca Saura",
+    password: "r5fsdf4fgsd4tgbh",
+    __v: 0
+  }
+]
+
 // always return one
 const dummy = (blogs) => 1
 
@@ -130,6 +161,6 @@ const mostLikes = (blogs) => {
 }
 
 module.exports = { 
-  initialBlogs,
+  initialBlogs, initialUsers,
   dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
