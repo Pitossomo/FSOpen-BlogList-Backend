@@ -1,0 +1,22 @@
+### GET all users
+GET http://localhost:3003/api/users/
+
+### POST a new user
+POST http://localhost:3003/api/users/
+Content-Type: application/json
+
+{
+  "name": "Harley Queen",
+  "username": "harlequin",
+  "password": "mrJ4ever"
+}
+
+### POST another user
+POST http://localhost:3003/api/users/
+Content-Type: application/json
+
+{
+  "name": "Selina Kyle",
+  "username": "catwoman",
+  "password": "bruceS2"
+}

@@ -1,23 +1,33 @@
+const bcrypt = require('bcrypt')
 const helper = require('../utils/helper')
+const User = require('../models/user')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 
 const api = supertest(app)
 
-const User = require('../models/user')
-
 beforeEach(async () => {
   await User.deleteMany({})
   
   const userObjs = helper.initialUsers.map(user => new User(user))
-  const userPromises = userObjs.map(user => user.save())
+  const userPromises = userObjs.map(async user => {
+    const passwordHash = await bcrypt.hash(user.password, 10)
+    const hashUser = new User({
+      name: user.name,
+      username: user.username,
+      password: passwordHash
+    })
+    
+    await hashUser.save()
+  })
   await Promise.all(userPromises)
 })
 
 describe('users GET method API', () => {
   test('return users in JSON format', async () => {
-    await api.get('/api/users').expect(200)
+    await api
+      .get('/api/users').expect(200)
       .expect('Content-Type', /application\/json/)
   })
   
@@ -36,22 +46,45 @@ describe('users GET method API', () => {
 })
 
 describe('users POST method API', () => {
-  test.todo('add 1 to the ammount of users when creating a new user'/*, async () => {
-    const blogToPost = {
-      title: "React is fun",
-      author: "Pitossomo",
-      url: "pitoact.com"
+  test('user creation succeds with a fresh username', async () => {
+    const newUser = {
+      username: "pandora",
+      name: "Pand Ora",
+      password: "pandaHora"
     }
 
     // POST to the database
-    await api.post('/api/blogs').send(blogToPost).expect(201)
+    await api
+      .post('/api/users').send(newUser)
+      .expect(201).expect('Content-Type', /application\/json/)
 
     // GET from database and check for increased length
-    const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(7)
-  }*/)
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(helper.initialUsers.length + 1)
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
 
-  test.todo('save correctly the content of the blog - Ex. 4.10'/*, async () => {
+  test('user creation fails with proper status code and message if username is not unique', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'pitossomo',
+      name: 'Pitossomo II',
+      password: 'jogynelsu'
+    }
+
+    const result = await api
+      .post('/api/users').send(newUser)
+      .expect(400).expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('This username is already in use. Please, choose another one')
+    
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toEqual(usersAtStart)
+  })
+
+  test.todo('save correctly the user'/*, async () => {
     const blogToPost = {
       title: 'React is fun',
       author: 'Pitossomo',
@@ -76,35 +109,47 @@ describe('users POST method API', () => {
     })
   }*/)
 
-  test.todo('default value of likes to 0 when it is missing'/*, async () => {
-    const blogToPost = {
-      title: "React is fun",
-      author: "Pitossomo",
-      url: "pitoact.com"
-    }
-
-    const response = await api.post('/api/blogs').send(blogToPost)
-    const blog = response.body
-    expect(blog.likes).toBe(0)
-  }*/)
-
-  test.todo('return 400 error when POST new blog with missing title'/*, async () => {
-    const blogToPost = {
-      author: "Pitossomo",
-      url: "pitoact.com"
+  test('return 400 error when POST new user with missing username', async () => {
+    const newUser = {
+      name: 'Joaquim José',
+      password: "dasilvaxavier"
     }
     
-    await api.post('/api/blogs').send(blogToPost).expect(400)
-  }*/)
-
-  test.todo('return 400 error when POST new blog with missing url'/*, async () => {
-    const blogToPost = {
-      title: 'React is fun',
-      author: "Pitossomo"
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toContain('A username is required')    
+  })
+  
+  test('return 400 error when POST new user with missing password', async () => {
+    const newUser = {
+      name: 'Maria Joaquina',
+      username: "mariajoaquina"
     }
     
-    await api.post('/api/blogs').send(blogToPost).expect(400)
-  }*/)
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toContain('A password is required')    
+  })
+
+  test('return 400 error when POST new user with username less than 3 chars long', async () => {
+    const newUser = {
+      name: 'Matt Murdock',
+      username: 'DD',
+      password: 'elektranachios'
+    }
+    
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toContain('Username must be at least 3 chars long')    
+  })
+  
+  test('return 400 error when POST new user with password less than 3 chars long', async () => {
+    const newUser = {
+      name: 'Peter Parker',
+      username: 'SpiderMan',
+      password: "mj"
+    }
+    
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toContain('Password must have at least 3 characters')    
+  })
 })
 
 afterAll(() => {

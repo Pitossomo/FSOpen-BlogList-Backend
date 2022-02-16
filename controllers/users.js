@@ -1,33 +1,42 @@
+const brcypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
-usersRouter.get('/', async (request, response, next) => {
-  try {
-    const users = await User.find({})
-    response.json(users)
-  } catch(exception) {
-    next(exception)
-  }
+usersRouter.get('/', async (request, response) => {
+  const users = await User.find({})
+  response.json(users)
 })
 
-usersRouter.get('/:id', async (request, response, next) => {
-  try {
+usersRouter.get('/:id', async (request, response) => {
     const user = await User.find({id: request.params.id})
     response.json(user)
-  } catch(exception) {
-    next(exception)
-  }
 })
 
-usersRouter.post('/', async (request, response, next) => {
-  const user = new User(request.body)
+usersRouter.post('/', async (request, response) => {
+  const { username, name, password } = request.body
 
-  try {
-    const result = await user.save()
-    response.status(201).json(result)
-  } catch(exception) {
-    next(exception)
+  if (!password) {
+    return response.status(400).json({ error: 'A password is required'})
   }
+  if (password.length < 3) {
+    return response.status(400).json({ error: 'Password must have at least 3 characters'})
+  }
+  const users = await User.find({})
+  const usernames = users.map(u => u.username)
+  if (usernames.includes(username)) {
+    return response.status(400).json({ error: 'This username is already in use. Please, choose another one'})
+  }
+
+  const saltRounds = 10
+  const passwordHash = await brcypt.hash(password, saltRounds)
+  const user = new User({
+    username,
+    name,
+    password: passwordHash
+  })
+
+  const savedUser = await user.save()
+  response.status(201).json(savedUser)
 })
 
 module.exports = usersRouter

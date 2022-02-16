@@ -18,7 +18,7 @@ PUT http://localhost:3003/api/blogs/6204c8b1d68e291a2923129f
 Content-Type: application/json
 
 {
-  "title": "Mr. J is gay",
+  "title": "Mr. J i love u",
   "author": "Harley",
   "url": "hquin.com.ux"
 }
