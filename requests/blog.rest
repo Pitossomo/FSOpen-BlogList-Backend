@@ -4,6 +4,7 @@ GET http://localhost:3003/api/blogs
 ### POST a new blog
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhcmxlcXVpbiIsImlkIjoiNjIwYjcwZmZiMmVlMDRmOWMyZWEwMjJlIiwiaWF0IjoxNjQ1Mjc4Njg2fQ.I7W4iETCkJiNwe10uC_jV7BZ7_ITOR50M2RUnswMlAU
 
 {
   "title": "Stars and Stripes",
@@ -11,7 +12,7 @@ Content-Type: application/json
   "url": "captain.com"
 }
 ### DELETE a blog by id
-DELETE http://localhost:3003/api/blogs/6210b94733681da840c360b6
+DELETE http://localhost:3003/api/blogs/6210ba3d4b1ad84c64ac3196
 
 ### PUT a blog change by id
 PUT http://localhost:3003/api/blogs/6204c8b1d68e291a2923129f

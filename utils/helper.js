@@ -56,21 +56,21 @@ const initialUsers = [
     _id: "5a422aa71b54a676234d17f4",
     username: "pitossomo",
     name: "Pitos Somos",
-    password: "03eu89fjd9sjf9d",
+    password: "picareta",
     __v: 0
   },
   {
     _id: "5a422a851b54a676234d17f5",
     username: "mayhume",
     name: "Wanessa Mayhume",
-    password: "32safds34ersdfsd",
+    password: "wakarimashita",
     __v: 0
   },
   {
     _id: "5a422a851b54a676234d17f6",
     username: "bereta",
     name: "Bia Mayhume",
-    password: "34esdfcr324rdsfs",
+    password: "biriba",
     __v: 0
   },
   {
@@ -81,6 +81,14 @@ const initialUsers = [
     __v: 0
   }
 ]
+
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
 
 const usersInDb = async () => {
   const users = await User.find({})
@@ -168,6 +176,6 @@ const mostLikes = (blogs) => {
 }
 
 module.exports = { 
-  initialBlogs, initialUsers, usersInDb,
+  initialBlogs, initialUsers, usersInDb, getTokenFrom,
   dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
