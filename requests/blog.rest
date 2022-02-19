@@ -6,12 +6,12 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-  "title": "XOXO",
-  "author": "Harlay Qin",
-  "url": "hquin.com.ux"
+  "title": "Stars and Stripes",
+  "author": "S. Rogers",
+  "url": "captain.com"
 }
 ### DELETE a blog by id
-DELETE http://localhost:3003/api/blogs/6204ca8c719bb26436c9ec07
+DELETE http://localhost:3003/api/blogs/6210b94733681da840c360b6
 
 ### PUT a blog change by id
 PUT http://localhost:3003/api/blogs/6204c8b1d68e291a2923129f
