@@ -12,8 +12,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNhd
   "url": "killingjoke.com"
 }
 ### DELETE a blog by id
-DELETE http://localhost:3003/api/blogs/6211889b0b1ae858b72b4feb
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBpdG9zc29tbyIsImlkIjoiNjIxMTdiNjQ0NzI3NGEzZDM1NWJkY2M1IiwiaWF0IjoxNjQ1MzE5OTgzfQ.xf0CrQLfxXSuj4HM7gJL2LVrxt3_TjMEnRPRWMJTHKY
+DELETE http://localhost:3003/api/blogs/62120e2f9f69d9b2a8056b57
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNhdHdvbWFuIiwiaWQiOiI2MjBiNzEzZmMyY2FkYThlMGZkMTljMzciLCJpYXQiOjE2NDUzMjAwODh9.RzG1ddJtqBFrVdvPun1fGFN3WIQRrDrMPAhv8ixsFJk
 
 ### PUT a blog change by id
 PUT http://localhost:3003/api/blogs/6204c8b1d68e291a2923129f
