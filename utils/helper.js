@@ -82,14 +82,6 @@ const initialUsers = [
   }
 ]
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
@@ -176,6 +168,6 @@ const mostLikes = (blogs) => {
 }
 
 module.exports = { 
-  initialBlogs, initialUsers, usersInDb, getTokenFrom,
+  initialBlogs, initialUsers, usersInDb,
   dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
