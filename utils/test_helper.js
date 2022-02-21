@@ -1,4 +1,6 @@
+const Blog = require("../models/blog")
 const User = require("../models/user")
+const bcrypt = require("bcrypt")
 
 const initialBlogs = [
   {
@@ -56,35 +58,66 @@ const initialUsers = [
     _id: "5a422aa71b54a676234d17f4",
     username: "pitossomo",
     name: "Pitos Somos",
-    password: "picareta",
+    password: "pitossomo",
     __v: 0
   },
   {
     _id: "5a422a851b54a676234d17f5",
     username: "mayhume",
     name: "Wanessa Mayhume",
-    password: "wakarimashita",
+    password: "mayhume",
     __v: 0
   },
   {
     _id: "5a422a851b54a676234d17f6",
-    username: "bereta",
+    username: "bibi",
     name: "Bia Mayhume",
-    password: "biriba",
+    password: "bibi",
     __v: 0
   },
   {
     _id: "5a422a851b54a676234d17f7",
-    username: "jubilea",
-    name: "Juca Saura",
-    password: "r5fsdf4fgsd4tgbh",
+    username: "jubileu",
+    name: "Juca Sauro",
+    password: "jubileu",
     __v: 0
   }
 ]
 
+const resetUsers = async () => {
+  await User.deleteMany({})
+
+  const userPromises = initialUsers.map(async user => {
+    const hash = await bcrypt.hash(user.password, 10)
+    const userObj = new User({
+      ...user,
+      password: hash
+    })
+    await userObj.save()
+  })
+
+  await Promise.all(userPromises)
+}
+
+const resetBlogs = async (users) => {
+  await Blog.deleteMany({})
+  
+  const blogObjs = initialBlogs.map(blog => new Blog(blog))
+  const blogPromises = blogObjs.map(async blog => {
+    blog.user = users[0].id
+    return await blog.save()
+  })
+  await Promise.all(blogPromises)
+}
+
 const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
+}
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(b => b.toJSON())
 }
 
 // always return one
@@ -168,6 +201,7 @@ const mostLikes = (blogs) => {
 }
 
 module.exports = { 
-  initialBlogs, initialUsers, usersInDb,
+  initialBlogs, initialUsers, resetBlogs, resetUsers,
+  usersInDb, blogsInDb, 
   dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }

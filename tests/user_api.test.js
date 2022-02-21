@@ -1,5 +1,4 @@
-const bcrypt = require('bcrypt')
-const helper = require('../utils/helper')
+const helper = require('../utils/test_helper')
 const User = require('../models/user')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -8,20 +7,7 @@ const app = require('../app')
 const api = supertest(app)
 
 beforeEach(async () => {
-  await User.deleteMany({})
-  
-  const userObjs = helper.initialUsers.map(user => new User(user))
-  const userPromises = userObjs.map(async user => {
-    const passwordHash = await bcrypt.hash(user.password, 10)
-    const hashUser = new User({
-      name: user.name,
-      username: user.username,
-      password: passwordHash
-    })
-    
-    await hashUser.save()
-  })
-  await Promise.all(userPromises)
+  await helper.resetUsers()
 })
 
 describe('users GET method API', () => {

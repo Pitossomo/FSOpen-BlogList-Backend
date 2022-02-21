@@ -1,4 +1,4 @@
-const brcypt = require('bcrypt')
+const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
@@ -30,7 +30,7 @@ usersRouter.post('/', async (request, response) => {
   }
 
   const saltRounds = 10
-  const passwordHash = await brcypt.hash(password, saltRounds)
+  const passwordHash = await bcrypt.hash(password, saltRounds)
   const user = new User({
     username,
     name,

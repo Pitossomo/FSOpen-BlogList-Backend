@@ -1,5 +1,4 @@
-const listHelper = require('../../utils/helper')
-const Blog = require('../../models/blog')
+const listHelper = require('../../utils/test_helper')
 
 const totalLikes = listHelper.totalLikes
 
