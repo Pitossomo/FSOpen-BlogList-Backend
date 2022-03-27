@@ -27,11 +27,19 @@ blogsRouter.post('/', async (request, response) => {
   await user.save()
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.post('/:id', async (request, response) => {
   const id = request.params.id
   const blog = request.body
+  blog.user = blog.user._id // Reference creator user in blog data
+
+  const user = request.user
+
+  if (user._id.toString() !== blog.user.toString()) {
+    return response.status(401).json({ error: 'user not authorized' })
+  }
 
   const result = await Blog.findByIdAndUpdate(id, blog)
+
   response.status(201).json(result)
 })
 
@@ -46,6 +54,16 @@ blogsRouter.delete('/:id', async (request, response) => {
 
   await Blog.findByIdAndDelete(blogId)
   response.status(200).send()
+})
+
+// like operation
+blogsRouter.post('/like/:id', async (request, response) => {
+  const id = request.params.id
+
+  // mongoose syntax for increasing 1
+  const result = await Blog.findByIdAndUpdate(id, { $inc: { likes: 1 } })
+
+  response.status(201).json(result)
 })
 
 module.exports = blogsRouter
