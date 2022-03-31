@@ -68,9 +68,9 @@ blogsRouter.post('/:id/like', async (request, response) => {
 
 blogsRouter.post('/:id/comment', async (request, response) => {
   const id = request.params.id
-  const comment = request.comment
+  const comment = request.body.comment
 
-  // mongoose syntax for increasing 1
+  // mongoose syntax for pushing one element to the comments array
   const result = await Blog.findByIdAndUpdate(id, {
     $push: { comments: comment },
   })
