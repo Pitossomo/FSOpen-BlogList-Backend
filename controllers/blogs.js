@@ -57,11 +57,23 @@ blogsRouter.delete('/:id', async (request, response) => {
 })
 
 // like operation
-blogsRouter.post('/like/:id', async (request, response) => {
+blogsRouter.post('/:id/like', async (request, response) => {
   const id = request.params.id
 
   // mongoose syntax for increasing 1
   const result = await Blog.findByIdAndUpdate(id, { $inc: { likes: 1 } })
+
+  response.status(201).json(result)
+})
+
+blogsRouter.post('/:id/comment', async (request, response) => {
+  const id = request.params.id
+  const comment = request.comment
+
+  // mongoose syntax for increasing 1
+  const result = await Blog.findByIdAndUpdate(id, {
+    $push: { comments: comment },
+  })
 
   response.status(201).json(result)
 })
